@@ -8,12 +8,14 @@
     containerOf: {
       bookList: 'ul.books-list',
       filters: '.filters form',
-    }
+    },
+    bookAttribute: 'data-id',
   }
 
   const classNames = {
     favouriteBooks: 'favorite',
-    hideBooks: 'hidden'
+    hideBooks: 'hidden',
+    imageBooks: 'book__image',
   }
 
   const templates = Handlebars.compile(document.querySelector(select.templateOf.book).innerHTML);
@@ -53,11 +55,11 @@
       const favoriteBooks = [];
       thisBook.dom.bookList.addEventListener('dblclick', function (arg) {
         arg.preventDefault();
-        if (arg.target.offsetParent.classList.contains('book__image')) {
-          const bookId = arg.target.offsetParent.getAttribute('data-id');
+        if (arg.target.offsetParent.classList.contains(classNames.imageBooks)) {
+          const bookId = arg.target.offsetParent.getAttribute(select.bookAttribute);
           if (!favoriteBooks.includes(bookId)) favoriteBooks.push(bookId);
           else favoriteBooks.splice(favoriteBooks.indexOf(bookId), 1);
-          arg.target.offsetParent.classList.toggle('favorite');
+          arg.target.offsetParent.classList.toggle(classNames.favouriteBooks);
         }
       });
       thisBook.bookForm.addEventListener('click', function (arg) {
@@ -89,9 +91,9 @@
           }
         }
         if (shouldBeHidden == true) {
-          bookToHide.classList.add('hidden');
+          bookToHide.classList.add(classNames.hideBooks);
         }
-        else bookToHide.classList.remove('hidden');
+        else bookToHide.classList.remove(classNames.hideBooks);
       }
     }
 
